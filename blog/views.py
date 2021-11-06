@@ -6,12 +6,24 @@ from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm, BlogPostForm
 from django.views.generic import UpdateView
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def blogs(request):
     posts = BlogPost.objects.all()
     posts = BlogPost.objects.filter()
     return render(request, "blog.html", {'posts':posts})
+
+def blogs_comments(request, slug):
+    post = BlogPost.objects.filter(slug=slug).first()
+    comments = Comment.objects.filter(blog=post)
+    if request.method=="POST":
+        user = request.user
+        content = request.POST.get('content','')
+        blog_id =request.POST.get('blog_id','')
+        comment = Comment(user = user, content = content, blog=post)
+        comment.save()
+    return render(request, "blog_comments.html", {'post':post, 'comments':comments})
 
 def Delete_Blog_Post(request, slug):
     posts = BlogPost.objects.get(slug=slug)
@@ -28,6 +40,7 @@ def search(request):
     else:
         return render(request, "search.html", {})
 
+@login_required(login_url = '/login')
 def add_blogs(request):
     if request.method=="POST":
         form = BlogPostForm(data=request.POST, files=request.FILES)
@@ -111,4 +124,3 @@ def Logout(request):
     logout(request)
     messages.success(request, "Successfully logged out")
     return redirect('/login')
-

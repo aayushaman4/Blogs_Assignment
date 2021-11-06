@@ -4,4 +4,6 @@ from .models import BlogPost
 from .models import *
 
 admin.site.register(BlogPost)
+admin.site.register(Comment)
 admin.site.register(Profile)
+
