@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth  import authenticate,  login, logout
 from .models import *
@@ -7,7 +8,6 @@ from .forms import ProfileForm, BlogPostForm
 from django.views.generic import UpdateView
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-
 
 def blogs(request):
     posts = BlogPost.objects.all()

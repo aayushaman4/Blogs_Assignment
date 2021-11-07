@@ -12,7 +12,7 @@ class BlogPost(models.Model):
     image = models.ImageField(upload_to="profile_pics", blank=True, null=True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-   
+
     def __str__(self):
         return str(self.author) +  " Blog Title: " + self.title
     
